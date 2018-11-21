@@ -1,0 +1,16 @@
+language: python
+python:
+- '3.6'
+install:
+- pip install -r requirements.txt
+script: make site
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: "$github_token"
+  local-dir: "./blog/html/"
+  on:
+    branch: master
+env:
+  global:
+    secure: CmsFgw6IZA6YF0d+aLif/SANve6Gm6nO3Gl5O7Krf1++2zRtbI4GAfzxXzFZ3cc551P+vY3LCQnhdwizxVeOWJ6hHrSEfZaxndMFB5I+S2fCrZo5T+icAnlRir8Mw7uOVOVc8yrj75OBuEsvclcPd18/YVg0AO4G/CUrF5lq+k0pXoS9sJUCHKEVqY1UM+bYGOkkk41lKCG5LyOSJuPU4sjTJSkKa0hyz+znZKY/V7iJ7j4wUQgBUcK1bzg5LaBafolnkgGPp0pX+QyYb32nQTrHxfkGD7N+qiwgES0cgMqF/AZn9x1VNjtZrfSgCOMjtAJ9NgspB7DyJvmkMsu1Bd/vOVzrqe3a7sSo6oMtLQ3LDOrkJhBWeXyTEA1wl7uwa1ojQYew4LgN5ycQLHyZ4OMNlC0IZVhrYGK6CITvWtFu3P+yHjvrGsnBZzU7OqA4D9ufgjxd07KJV/SR2Hveb8CL3SEFhFsjwap11UyomoZMwj+bar+fPKBsKJk7IQIR3vIG6zsQ2Cy9F7y9mPdUBa0JG4qEPSQTfWOd/xuooHH9KKI+J6BVVfZMjqh/gkT7wIlVnArFgSz4cgE2Zp5Qhutac6lpvyi3S42UKZXYj4YzQ9sUowUWaYUeBkHTQ4gLDCLEqVoegpr+tv5Er/n9N+7eflX301pn7xmb6N/4XPc=
