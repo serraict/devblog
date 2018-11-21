@@ -1,0 +1,317 @@
+<!DOCTYPE html><!--[if lt IE 7]>      <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:og="http://ogp.me/ns#"
+    xmlns:fb="https://www.facebook.com/2008/fbml" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:og="http://ogp.me/ns#"
+    xmlns:fb="https://www.facebook.com/2008/fbml" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:og="http://ogp.me/ns#"
+    xmlns:fb="https://www.facebook.com/2008/fbml" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:og="http://ogp.me/ns#"
+    xmlns:fb="https://www.facebook.com/2008/fbml" class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="description" content="My blog">
+        <meta name="viewport" content="width=device-width">
+        <title>CQRS Resources &mdash; Serra&#39;s Blog ^^</title>
+            <link rel="stylesheet" href="../../../_static/normalize.css" type="text/css">
+            <link rel="stylesheet" href="../../../_static/sphinx.css" type="text/css">
+            <link rel="stylesheet" href="../../../_static/main.css" type="text/css">
+            <link rel="stylesheet" href="../../../_static/modern5.css" type="text/css">
+            <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+            <link rel="stylesheet" href="../../../_static/font-awesome.min.css" type="text/css">
+        <link rel="stylesheet" href="../../../_static/serra.css" type="text/css" /><link rel="shortcut icon" href="../../../_static/tinkerer.ico" /><!-- Load modernizr and JQuery -->
+        <script src="../../../_static/vendor/modernizr-2.6.2.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="../../../_static/vendor/jquery-1.8.2.min.js"><\/script>')</script>
+        <script src="../../../_static/plugins.js"></script>
+        <script src="../../../_static/main.js"></script>
+        <link rel="search" title="Search" href="../../../search.html" /><link rel="next" title="Tinkering my Blog" href="../16/tinkering_my_blog.html" /><link rel="prev" title="Extending Greg Young’s Simplest Possible Thing" href="../25/extending_greg_young_s_simplest_possible_thing.html" /><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.html" /><script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.7.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        SOURCELINK_SUFFIX: '.txt',
+        HAS_SOURCE:  true
+      };
+    </script><script type="text/javascript" src="../../../_static/underscore.js"></script><script type="text/javascript" src="../../../_static/doctools.js"></script><script type="text/javascript" src="../../../_static/disqus.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Adjusts document height if sidebar is taller
+            var documentwrapper = document.getElementsByTagName("article")[0];
+            var sidebar = document.getElementsByClassName("sidebar")[0];
+
+            if (sidebar.offsetHeight > documentwrapper.offsetHeight)
+            {
+                var mainwrapper = document.getElementsByClassName("main")[0];
+                documentwrapper.style.minHeight = mainwrapper.offsetHeight + "px";
+            }
+
+            // Scroll to content if on small screen
+            if (screen.width < 480)
+            {
+                $(document).scrollTop(document.getElementsByTagName("article")[0].offsetTop - 44);
+            }
+        });
+    </script></head>
+    <body role="document">
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+      <div id="container"><header role="banner">
+            <hgroup>
+              <h1><a href="../../../index.html">Serra&#39;s Blog ^^</a></h1><h2>Learning while developing software</h2></hgroup>
+          </header>
+      <nav role="navigation">
+            <ul><li class="quicklink"><div class="rss">
+        <a href="../../../rss.html" title="Subscribe via RSS"><span class="fa fa-lg fa-rss"></span></a>
+    </div></li><li class="main-nav">
+                  <a href="../../../index.html">Home</a>
+                </li>
+              <li class="main-nav">
+                  <a href="../../../pages/bio.html">Bio</a>
+                </li>
+              <li class="main-nav">
+                  <a href="../../../pages/contact.html">Contact</a>
+                </li>
+              </ul>
+          </nav><div class="main-container" role="main"><div class="main wrapper body clearfix"><article role="article"><ul class="related clearfix">
+            <li class="left"> &laquo; <a href="../25/extending_greg_young_s_simplest_possible_thing.html">Extending Greg Young’s Simplest Possible Thing</a></li>
+            <li class="right"><a href="../16/tinkering_my_blog.html">Tinkering my Blog</a> &raquo; </li>
+        </ul><div class="timestamp postmeta">
+            <span>July 20, 2012</span>
+        </div>
+    <div class="section" id="cqrs-resources">
+<h1>CQRS Resources</h1>
+<p>I’ve spent the last couple of weeks studying Command Query Responsibility Segregation (CQRS).
+I found that information is scattered all over the internet
+and that at the moment there isn’t a single authoritative resource yet,
+this slows studying CQRS down somewhat.
+In this post, I’ll summarize the resources I found useful.</p>
+<p>I’ll first introduce some people and then list some good starting points,
+depending on your needs.</p>
+<div id="more"> </div><div class="section" id="people-in-cqrs">
+<span id="cqrs-people"></span><h2>People in CQRS</h2>
+<p>A short who-is-who in CQRS.
+I’ll probably forget some important people … sorry for that.</p>
+<p><em>Greg Young</em> is credited for coining the term Command Query Responsibility Segregation.
+Rumors are that he’s working on a book; but is isn’t nearly finished yet,
+a compilation of samples is available though <a class="footnote-reference" href="#youngdddd" id="id1">[8]</a>.
+He has written many blog posts on CQRS <a class="footnote-reference" href="#youngblog" id="id2">[7]</a>
+and has given many talks - many available on the net.
+Saying he’s an authoritative resource on the subject is an understatement.</p>
+<p><em>Udi Dahan</em> started the NServiceBus project and the NServiceBus Ltd company.
+He has advocated the use of CQRS principles in distributed applications
+and found that it was a good match with the use of an enterprise service bus
+such as NServiceBus.
+His article “Clarified CQRS” <a class="footnote-reference" href="#dahan" id="id3">[9]</a> is referenced a lot.</p>
+<p><em>Rinat Abdullin</em> is a driving force behind Lokad.CQRS <a class="footnote-reference" href="#lokadcqrs" id="id4">[3]</a>
+and the CQRS pocket guide <a class="footnote-reference" href="#cqrspocketguide" id="id5">[2]</a>.
+His blog <a class="footnote-reference" href="#abdullinblog" id="id6">[1]</a> is a good read too.</p>
+<p><em>Eric Evans</em>’ big blue book <a class="footnote-reference" href="#evansddd" id="id7">[4]</a> on domain driven design is a must-read.
+<em>Vernon Vaughn</em> is writing a book on implementing domain driven design <a class="footnote-reference" href="#vaughniddd" id="id8">[10]</a>,
+but is is not yet published.
+<em>Mark Nijhoff</em> created a comprehensive and complete
+CQRS reference application in .net. It is available on Github
+and is documented on his blog <a class="footnote-reference" href="#nijhof" id="id9">[11]</a>.
+<em>Jonathan Oliver</em> <a class="footnote-reference" href="#oliver" id="id10">[6]</a> created the EventStore <a class="footnote-reference" href="#eventstore" id="id11">[5]</a>
+framework for .net and is also a contributor to Autofac and NServiceBus.</p>
+</div>
+<div class="section" id="starting-points">
+<h2>Starting points</h2>
+<p>I can recommend the following starting points:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://martinfowler.com/bliki/CQRS.html">http://martinfowler.com/bliki/CQRS.html</a>, Fowler, what is CQRS</li>
+<li><a class="reference external" href="http://cqrsguide.com/">http://cqrsguide.com/</a></li>
+<li><a class="reference external" href="http://abdullin.com/cqrs/">http://abdullin.com/cqrs/</a></li>
+<li><a class="reference external" href="http://lostechies.com/gabrielschenker/2012/07/15/adnug-presentation-july-12-2012/">http://lostechies.com/gabrielschenker/2012/07/15/adnug-presentation-july-12-2012/</a></li>
+</ul>
+</div></blockquote>
+<p>If you want to study a working example:</p>
+<blockquote>
+<div><ul class="simple">
+<li>super-simple, by Greg Young: <a class="reference external" href="http://github.com/gregoryyoung/m-r">http://github.com/gregoryyoung/m-r</a></li>
+<li>comprehensive, complete and documented, by Mark Nijhof: <a class="reference external" href="https://github.com/MarkNijhof/Fohjin">https://github.com/MarkNijhof/Fohjin</a></li>
+<li>take it even further: <a class="reference external" href="http://lokad.github.com/lokad-cqrs/">http://lokad.github.com/lokad-cqrs/</a></li>
+<li><a class="reference external" href="https://github.com/etishor/CQRSEventSourcingSample">https://github.com/etishor/CQRSEventSourcingSample</a></li>
+<li><a class="reference external" href="https://github.com/haf/Documently">https://github.com/haf/Documently</a></li>
+</ul>
+</div></blockquote>
+<p>If you’ve got some time and want to watch a video:</p>
+<blockquote>
+<div><ul class="simple">
+<li>I’ve got about an hour and want an introduction to CQRS:
+view Oliver <a class="reference external" href="http://vimeo.com/9573973">http://vimeo.com/9573973</a></li>
+<li>I’ve got about two hours and want to put CQRS in business perspective:
+<a class="reference external" href="http://www.youtube.com/watch?v=KXqrBySgX-s">http://www.youtube.com/watch?v=KXqrBySgX-s</a></li>
+<li>I’ve got about a day and want a thorough understanding of CQRS;
+both from a business and developer perspective:
+<a class="reference external" href="http://www.viddler.com/v/dc528842">http://www.viddler.com/v/dc528842</a></li>
+</ul>
+</div></blockquote>
+<p>The last video is almost 7 hours long,
+but it is AWESOME and worth every minute of your time
+if you’re seriously considering applying CQRS to one of your projects.</p>
+</div>
+<div class="section" id="code-examples-frameworks">
+<h2>Code - examples &amp; frameworks</h2>
+<p>The basic principles for doing CQRS are pretty straightforward and
+do not require the use of advanced frameworks.</p>
+<p>Using a framework for event sourcing (persisting domain state using events)
+might be useful.
+For all other things, you are probably best of rolling your own infrastructure,
+which should not be more then several hundreds lines of code.</p>
+<div class="section" id="examples">
+<span id="cqrs-examples"></span><h3>Examples</h3>
+<blockquote>
+<div><ul class="simple">
+<li>super-simple, by Greg Young: <a class="reference external" href="http://github.com/gregoryyoung/m-r">http://github.com/gregoryyoung/m-r</a></li>
+<li>comprehensive, complete and documented, by Mark Nijhof: <a class="reference external" href="https://github.com/MarkNijhof/Fohjin">https://github.com/MarkNijhof/Fohjin</a></li>
+<li>take it even further: <a class="reference external" href="http://lokad.github.com/lokad-cqrs/">http://lokad.github.com/lokad-cqrs/</a></li>
+<li><a class="reference external" href="https://github.com/Lokad/lokad-cqrs">https://github.com/Lokad/lokad-cqrs</a></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="frameworks">
+<h3>“Frameworks”</h3>
+<p>Packages on NuGet: <a class="reference external" href="http://nuget.org/packages?q=cqrs">http://nuget.org/packages?q=cqrs</a></p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://nuget.org/packages/EventStore">http://nuget.org/packages/EventStore</a></li>
+<li><a class="reference external" href="http://nuget.org/packages/Lokad.CQRS">http://nuget.org/packages/Lokad.CQRS</a></li>
+<li><a class="reference external" href="http://nuget.org/packages/Scritchy">http://nuget.org/packages/Scritchy</a></li>
+<li><a class="reference external" href="http://nuget.org/packages/SimpleCqrs">http://nuget.org/packages/SimpleCqrs</a></li>
+<li><a class="reference external" href="http://nuget.org/packages/ncqrs">http://nuget.org/packages/ncqrs</a></li>
+</ul>
+</div></blockquote>
+<p class="rubric">Footnotes</p>
+<table class="docutils footnote" frame="void" id="abdullinblog" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id6">[1]</a></td><td><a class="reference external" href="http://abdullin.com/">http://abdullin.com/</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="cqrspocketguide" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id5">[2]</a></td><td><a class="reference external" href="http://cqrs.wikidot.com/">http://cqrs.wikidot.com/</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="lokadcqrs" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4">[3]</a></td><td><a class="reference external" href="http://lokad.github.com/lokad-cqrs/">http://lokad.github.com/lokad-cqrs/</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="evansddd" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id7">[4]</a></td><td>Domain Driven Design</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="eventstore" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id11">[5]</a></td><td><a class="reference external" href="https://github.com/joliver/EventStore/">https://github.com/joliver/EventStore/</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="oliver" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id10">[6]</a></td><td><a class="reference external" href="http://blog.jonathanoliver.com/">http://blog.jonathanoliver.com/</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="youngblog" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[7]</a></td><td><a class="reference external" href="http://goodenoughsoftware.net/2012/03/02/cqrs/">http://goodenoughsoftware.net/2012/03/02/cqrs/</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="youngdddd" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[8]</a></td><td><a class="reference external" href="http://abdullin.com/storage/uploads/2010/04/2010-04-16_DDDD_Drafts_by_Greg_Young.pdf">http://abdullin.com/storage/uploads/2010/04/2010-04-16_DDDD_Drafts_by_Greg_Young.pdf</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="dahan" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[9]</a></td><td><a class="reference external" href="http://www.udidahan.com/2009/12/09/clarified-cqrs/">http://www.udidahan.com/2009/12/09/clarified-cqrs/</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="vaughniddd" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id8">[10]</a></td><td><a class="reference external" href="http://my.safaribooksonline.com/9780133039900">http://my.safaribooksonline.com/9780133039900</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="nijhof" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id9">[11]</a></td><td><a class="reference external" href="https://github.com/MarkNijhof/Fohjin">https://github.com/MarkNijhof/Fohjin</a></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+    <div class="postmeta">
+        <div class="author">
+            <span>Posted by Marijn van der Zee</span>
+        </div>
+        
+        <div class="tags">
+            <span>
+                Tags:
+                <a href="../../../tags/cqrs.html">CQRS</a></span>
+        </div>
+        </div>
+    <div id="disqus_thread"></div><script type="text/javascript">    var disqus_shortname = "serraongithub";    var disqus_identifier = "2012/07/20/cqrs_resources";    disqus_thread();</script><noscript>Please enable JavaScript to view the    <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><ul class="related clearfix">
+            <li class="left"> &laquo; <a href="../25/extending_greg_young_s_simplest_possible_thing.html">Extending Greg Young’s Simplest Possible Thing</a></li>
+            <li class="right"><a href="../16/tinkering_my_blog.html">Tinkering my Blog</a> &raquo; </li>
+        </ul></article><aside class="sidebar"><section><div class="widget">
+    <h1>Recent Posts</h1>
+    <ul><li>
+            <a href="../../../2013/08/28/setting-up-rhino-servicebus-with-rhinoqueues.html">Setting up Rhino Servicebus with Rhinoqueues</a>
+        </li><li>
+            <a href="../../../2013/03/27/passing_build_properties_to_psake_cmd.html">Passing build properties to psake.cmd</a>
+        </li><li>
+            <a href="../../../2013/03/04/custom_editor_using_twitter_bootstrap_mvc4.html">Custom editor using Twitter.Bootstrap.Mvc4</a>
+        </li><li>
+            <a href="../../12/10/my_books.html">My Readings …</a>
+        </li><li>
+            <a href="../../11/02/continuous_integration_with_jenkis__git_and_psake.html">Continuous Integration with Jenkins, git and psake</a>
+        </li><li>
+            <a href="../../08/01/adding_mongodb_event_store.html">Adding a persistent event store</a>
+        </li><li>
+            <a href="../30/protecting_entity_invariants.html">Protecting Entity Invariants</a>
+        </li><li>
+            <a href="../27/command_validation.html">Command Validation</a>
+        </li><li>
+            <a href="../25/extending_greg_young_s_simplest_possible_thing.html">Extending Greg Young’s Simplest Possible Thing</a>
+        </li><li>
+            <a href="#">CQRS Resources</a>
+        </li></ul>
+</div>
+</section><section><div class="widget" id="searchbox" role="search">
+    <h1><a href="#searchbox">Search</a></h1>
+    <form action="../../../search.html" method="get">
+        <input type="text" name="q" />
+        <button type="submit"><span class="fa fa-search"></span></button>
+    </form>
+</div></section></aside></div> <!-- #main --></div> <!-- #main-container -->
+
+        <div class="footer-container" role="contentinfo"><footer class="wrapper">&copy; Copyright 2010, 2011, 2012 Marijn van der Zee. Powered by <a href="http://www.tinkerer.me/">Tinkerer</a> and <a href="http://sphinx.pocoo.org/">Sphinx</a>.</footer></div> <!-- footer-container -->
+
+      </div> <!--! end of #container --><!--[if lt IE 7 ]>
+          <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+          <script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
+        <![endif]-->
+    </body>
+</html>

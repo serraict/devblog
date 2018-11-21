@@ -1,0 +1,178 @@
+<!DOCTYPE html><!--[if lt IE 7]>      <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:og="http://ogp.me/ns#"
+    xmlns:fb="https://www.facebook.com/2008/fbml" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:og="http://ogp.me/ns#"
+    xmlns:fb="https://www.facebook.com/2008/fbml" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:og="http://ogp.me/ns#"
+    xmlns:fb="https://www.facebook.com/2008/fbml" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:og="http://ogp.me/ns#"
+    xmlns:fb="https://www.facebook.com/2008/fbml" class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="description" content="My blog">
+        <meta name="viewport" content="width=device-width">
+        <title>Generating C# code files for B2MML schema’s (2) &mdash; Serra&#39;s Blog ^^</title>
+            <link rel="stylesheet" href="../../../_static/normalize.css" type="text/css">
+            <link rel="stylesheet" href="../../../_static/sphinx.css" type="text/css">
+            <link rel="stylesheet" href="../../../_static/main.css" type="text/css">
+            <link rel="stylesheet" href="../../../_static/modern5.css" type="text/css">
+            <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+            <link rel="stylesheet" href="../../../_static/font-awesome.min.css" type="text/css">
+        <link rel="stylesheet" href="../../../_static/serra.css" type="text/css" /><link rel="shortcut icon" href="../../../_static/tinkerer.ico" /><!-- Load modernizr and JQuery -->
+        <script src="../../../_static/vendor/modernizr-2.6.2.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="../../../_static/vendor/jquery-1.8.2.min.js"><\/script>')</script>
+        <script src="../../../_static/plugins.js"></script>
+        <script src="../../../_static/main.js"></script>
+        <link rel="search" title="Search" href="../../../search.html" /><link rel="next" title="Generating C# code files for B2MML schemas" href="../16/b2mml-1.html" /><link rel="prev" title="Blogging in reSt on GitHub" href="../../../2011/07/16/blogging-in-rst-on-github.html" /><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.html" /><script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.7.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        SOURCELINK_SUFFIX: '.txt',
+        HAS_SOURCE:  true
+      };
+    </script><script type="text/javascript" src="../../../_static/underscore.js"></script><script type="text/javascript" src="../../../_static/doctools.js"></script><script type="text/javascript" src="../../../_static/disqus.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Adjusts document height if sidebar is taller
+            var documentwrapper = document.getElementsByTagName("article")[0];
+            var sidebar = document.getElementsByClassName("sidebar")[0];
+
+            if (sidebar.offsetHeight > documentwrapper.offsetHeight)
+            {
+                var mainwrapper = document.getElementsByClassName("main")[0];
+                documentwrapper.style.minHeight = mainwrapper.offsetHeight + "px";
+            }
+
+            // Scroll to content if on small screen
+            if (screen.width < 480)
+            {
+                $(document).scrollTop(document.getElementsByTagName("article")[0].offsetTop - 44);
+            }
+        });
+    </script></head>
+    <body role="document">
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+      <div id="container"><header role="banner">
+            <hgroup>
+              <h1><a href="../../../index.html">Serra&#39;s Blog ^^</a></h1><h2>Learning while developing software</h2></hgroup>
+          </header>
+      <nav role="navigation">
+            <ul><li class="quicklink"><div class="rss">
+        <a href="../../../rss.html" title="Subscribe via RSS"><span class="fa fa-lg fa-rss"></span></a>
+    </div></li><li class="main-nav">
+                  <a href="../../../index.html">Home</a>
+                </li>
+              <li class="main-nav">
+                  <a href="../../../pages/bio.html">Bio</a>
+                </li>
+              <li class="main-nav">
+                  <a href="../../../pages/contact.html">Contact</a>
+                </li>
+              </ul>
+          </nav><div class="main-container" role="main"><div class="main wrapper body clearfix"><article role="article"><ul class="related clearfix">
+            <li class="left"> &laquo; <a href="../../../2011/07/16/blogging-in-rst-on-github.html">Blogging in reSt on GitHub</a></li>
+            <li class="right"><a href="../16/b2mml-1.html">Generating C# code files for B2MML schemas</a> &raquo; </li>
+        </ul><div class="timestamp postmeta">
+            <span>July 26, 2010</span>
+        </div>
+    <div class="section" id="generating-c-code-files-for-b2mml-schema-s-2">
+<h1>Generating C# code files for B2MML schema’s (2)</h1>
+<p>I tried generating C# code files from the B2MML-V0401 xsd schema’s
+using <span class="docutils literal"><span class="pre">xsd.exe</span></span>.
+It required utilizing a bug in <span class="docutils literal"><span class="pre">xsd.exe</span></span>,
+typing in a command with as many parameters as xsd schema’s
+and resulted in a single, huge code file with code that I didn’t really like.
+It worked, but I wasn’t completely satisfied
+(see my previous post on this subject).
+After posting my findings to the
+<a class="reference external" href="http://tech.groups.yahoo.com/group/wbf-xml-wg/">WBF XML newsgroup</a>,
+I got a useful reply from Nick.</p>
+<p>Nick advised me to create a single schema file that includes the
+B2MML-V0401 xsd schema’s for which code should be generated and name it
+(for instance) <span class="docutils literal"><span class="pre">B2MML-V0401.xsd</span></span>.
+Then run <span class="docutils literal"><span class="pre">xsd</span> <span class="pre">B2MML-V0401-AllExtensions.xsd</span> <span class="pre">.\B2MML-V0401.xsd</span> <span class="pre">/c</span></span>
+on this file and voil?, you’ll get the code generated into <span class="docutils literal"><span class="pre">B2MML-V0401.cs</span></span>.</p>
+<p>I like this method, because the command is readable
+and I can cleanly specify the schema’s to use for input.</p>
+<p>However, it still left me with the code I didn’t really like. I’d like:</p>
+<blockquote>
+<div><ul class="simple">
+<li>generic lists instead of arrays</li>
+<li>the ability to generate data contract attributes</li>
+<li>to be able to automatically put the code in separate code files</li>
+</ul>
+</div></blockquote>
+<p>Nick pointed out that his company provides proprietary libraries
+that are compatible with B2MML messages and that provides the API’s I prefer.
+At this time however, I don’t want to go the proprietary road.
+However, if I can get my hands on an evaluation version,
+I’ll experiment a bit with it.</p>
+<p>I spend some, or rather too much, time searching for a freely available tool
+to do this code generation for me. I came across <span class="docutils literal"><span class="pre">CodeXS</span></span> en <span class="docutils literal"><span class="pre">XsdObjectGen</span></span>,
+but I found it cumbersome to start using them,
+and their current status was unclear to me.
+I ended up using <a class="reference external" href="http://xsd2code.codeplex.com/">Xsd2Code</a>,
+which enables me to generate the code I like from within Visual Studio (2008).
+It also has a command line tool, but I haven’t checked it out yet.</p>
+<p>Any suggestions on code generation tools (preferably open source) are welcome.</p>
+</div>
+
+    <div class="postmeta">
+        
+        
+        
+        </div>
+    <ul class="related clearfix">
+            <li class="left"> &laquo; <a href="../../../2011/07/16/blogging-in-rst-on-github.html">Blogging in reSt on GitHub</a></li>
+            <li class="right"><a href="../16/b2mml-1.html">Generating C# code files for B2MML schemas</a> &raquo; </li>
+        </ul></article><aside class="sidebar"><section><div class="widget">
+    <h1>Recent Posts</h1>
+    <ul><li>
+            <a href="../../../2013/08/28/setting-up-rhino-servicebus-with-rhinoqueues.html">Setting up Rhino Servicebus with Rhinoqueues</a>
+        </li><li>
+            <a href="../../../2013/03/27/passing_build_properties_to_psake_cmd.html">Passing build properties to psake.cmd</a>
+        </li><li>
+            <a href="../../../2013/03/04/custom_editor_using_twitter_bootstrap_mvc4.html">Custom editor using Twitter.Bootstrap.Mvc4</a>
+        </li><li>
+            <a href="../../../2012/12/10/my_books.html">My Readings …</a>
+        </li><li>
+            <a href="../../../2012/11/02/continuous_integration_with_jenkis__git_and_psake.html">Continuous Integration with Jenkins, git and psake</a>
+        </li><li>
+            <a href="../../../2012/08/01/adding_mongodb_event_store.html">Adding a persistent event store</a>
+        </li><li>
+            <a href="../../../2012/07/30/protecting_entity_invariants.html">Protecting Entity Invariants</a>
+        </li><li>
+            <a href="../../../2012/07/27/command_validation.html">Command Validation</a>
+        </li><li>
+            <a href="../../../2012/07/25/extending_greg_young_s_simplest_possible_thing.html">Extending Greg Young’s Simplest Possible Thing</a>
+        </li><li>
+            <a href="../../../2012/07/20/cqrs_resources.html">CQRS Resources</a>
+        </li></ul>
+</div>
+</section><section><div class="widget" id="searchbox" role="search">
+    <h1><a href="#searchbox">Search</a></h1>
+    <form action="../../../search.html" method="get">
+        <input type="text" name="q" />
+        <button type="submit"><span class="fa fa-search"></span></button>
+    </form>
+</div></section></aside></div> <!-- #main --></div> <!-- #main-container -->
+
+        <div class="footer-container" role="contentinfo"><footer class="wrapper">&copy; Copyright 2010, 2011, 2012 Marijn van der Zee. Powered by <a href="http://www.tinkerer.me/">Tinkerer</a> and <a href="http://sphinx.pocoo.org/">Sphinx</a>.</footer></div> <!-- footer-container -->
+
+      </div> <!--! end of #container --><script type="text/javascript">    var disqus_shortname = "serraongithub";    disqus_count();</script><!--[if lt IE 7 ]>
+          <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+          <script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
+        <![endif]-->
+    </body>
+</html>

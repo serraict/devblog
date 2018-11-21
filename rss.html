@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+    <channel>
+        <title>Serra's Blog ^^</title>
+        <link>http://serra.github.com/</link>
+        <description>Learning while developing software</description>
+        <language>en-us</language>
+        <pubDate>Wed, 28 Aug 2013 00:00:00 +0000</pubDate>
+        
+        <item>
+            <link>http://serra.github.com/2013/08/28/setting-up-rhino-servicebus-with-rhinoqueues.html</link>
+            <guid>http://serra.github.com/2013/08/28/setting-up-rhino-servicebus-with-rhinoqueues.html</guid>
+            <title><![CDATA[Setting up Rhino Servicebus with Rhinoqueues]]></title>
+            <description><![CDATA[<span id="id1"/><h1>Setting up Rhino Servicebus with Rhinoqueues</h1>
+<p>I’m builiding a CQRS applicatation and would like to use Rhino ESB with
+Rhino Queues as transport channel. I start the backend using:</p>
+<div class="highlight-c# notranslate"><div class="highlight"><pre><span/><span class="kt">var</span> <span class="n">host</span> <span class="p">=</span> <span class="k">new</span> <span class="n">DefaultHost</span><span class="p">();</span>
+<span class="n">host</span><span class="p">.</span><span class="n">Start</span><span class="p">&lt;</span><span class="n">EmptyBackendBootStrapper</span><span class="p">&gt;();</span>
+</pre></div>
+</div>
+<p>and unexpectedly the application throws a <cite>HandlerException</cite>, with the message:</p>
+<div class="highlight-c# notranslate"><div class="highlight"><pre><span/>"Can't create component 'Rhino.ServiceBus.Impl.DefaultServiceBus' as it has dependencies to be satisfied."
+
+'Rhino.ServiceBus.Impl.DefaultServiceBus' is waiting for the following dependencies:
+
+ - Service 'Rhino.ServiceBus.Internal.ITransport'
+   which was not registered.
+ - Service 'Rhino.ServiceBus.Internal.ISubscriptionStorage'
+   which was not registered.
+</pre></div>
+</div>
+<p>What was the problem? I used NuGet to install the dependencies, but I
+forgot to add <cite>Rhino.ServiceBus.RhinoQueues</cite>, instead adding only
+the <cite>Rhino.Queues</cite> package.
+Solution is to install the <cite>Rhino.ServiceBus.RhinoQueues</cite> package :)</p>
+<p>Also make sure you install the correct dependencies;
+for instance an newer version of <cite>Rhino.Queues</cite> might throw
+an error because it cannot load the required assembly version.
+Nuget should have added an assembly redirect, but if you don’t have it,
+you can tell NuGet to add binding redirects based on your packages:</p>
+<div class="highlight-c# notranslate"><div class="highlight"><pre><span/><span class="n">Add</span><span class="p">-</span><span class="n">BindingRedirect</span> <span class="p">-</span><span class="n">ProjectName</span> <span class="n">IntegrationTests</span><span class="p">.</span><span class="n">AppServer</span>
+</pre></div>
+</div>
+<p class="rubric">Footnotes</p>
+<table class="docutils footnote" frame="void" id="bjro" rules="none">
+<colgroup><col class="label"/><col/></colgroup>
+<tbody valign="top">
+<tr><td class="label">[1]</td><td><a class="reference external" href="https://github.com/BjRo/LearningRhinoServiceBus">https://github.com/BjRo/LearningRhinoServiceBus</a></td></tr>
+</tbody>
+</table>
+]]></description>
+             <pubDate>Wed, 28 Aug 2013 00:00:00 +0000</pubDate>
+        </item>
+    
+        <item>
+            <link>http://serra.github.com/2013/03/27/passing_build_properties_to_psake_cmd.html</link>
+            <guid>http://serra.github.com/2013/03/27/passing_build_properties_to_psake_cmd.html</guid>
+            <title><![CDATA[Passing build properties to psake.cmd]]></title>
+            <description><![CDATA[<h1>Passing build properties to psake.cmd</h1>
+<p>I love psake and used Chocolatey’s <span class="docutils literal"><span class="pre">cinst</span> <span class="pre">psake</span></span> to make <span class="docutils literal"><span class="pre">psake.cmd</span></span> globally available on my system.</p>
+<p>When I tried to do:</p>
+<div class="highlight-c# notranslate"><div class="highlight"><pre><span/>psake PackageSite -properties @{"configuration"="staging-standalone"}
+</pre></div>
+</div>
+<p>I got the error message:</p>
+<div class="highlight-c# notranslate"><div class="highlight"><pre><span/>C:\Chocolatey\lib\psake.4.2.0.1\tools\psake.ps1 : Cannot process argument transformation on parameter 'properties'. Cannot convert the "System.Collections.Hashtable" value of type "System.String" to type "System.Collections.Hashtable".
+</pre></div>
+</div>
+<p>To pass the string-formatted hashtable to Power Shell,
+use single quotes inside and double quotes around:</p>
+<div class="highlight-c# notranslate"><div class="highlight"><pre><span/><span class="n">psake</span> <span class="n">PackageSite</span> <span class="p">-</span><span class="n">properties</span> <span class="s">"@{'configuration'='staging-standalone'}"</span>
+</pre></div>
+</div>
+]]></description>
+             <pubDate>Wed, 27 Mar 2013 00:00:00 +0000</pubDate>
+        </item>
+    
+        <item>
+            <link>http://serra.github.com/2013/03/04/custom_editor_using_twitter_bootstrap_mvc4.html</link>
+            <guid>http://serra.github.com/2013/03/04/custom_editor_using_twitter_bootstrap_mvc4.html</guid>
+            <title><![CDATA[Custom editor using Twitter.Bootstrap.Mvc4]]></title>
+            <description><![CDATA[<h1>Custom editor using Twitter.Bootstrap.Mvc4</h1>
+<p>Twitter.Bootstrap has tons of extensions that are available to anyone using  <span class="docutils literal"><span class="pre">Twitter.Bootstrap.Mvc4</span></span> <a class="footnote-reference" href="#tbm" id="id1">[1]</a>.
+As an example, here are the steps to add a date picker <a class="footnote-reference" href="#datepicker" id="id2">[2]</a> to your Asp.Net Mvc4 app
+using <span class="docutils literal"><span class="pre">Twitter.Bootstrap.Mvc4</span></span>.</p>
+<p class="readmorewrapper"><a class="readmore" href="http://serra.github.com/2013/03/04/custom_editor_using_twitter_bootstrap_mvc4.html#more">Read more...</a></p> 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+]]></description>
+             <pubDate>Mon, 04 Mar 2013 00:00:00 +0000</pubDate>
+        </item>
+    
+        <item>
+            <link>http://serra.github.com/2012/12/10/my_books.html</link>
+            <guid>http://serra.github.com/2012/12/10/my_books.html</guid>
+            <title><![CDATA[My Readings …]]></title>
+            <description><![CDATA[<h1>My Readings …</h1>
+<p><a class="reference external" href="http://my.safaribooksonline.com/book/software-engineering-and-development/020161622x/a-pragmatic-philosophy/ch01lev1sec5">The Pragmatic Programmer, tip 8:</a></p>
+<blockquote>
+<div>Invest Regularly in Your Knowledge Portfolio;
+Make learning a habit.</div></blockquote>
+<p>I find reading to be an enjoyable activity,
+but it’s also a necessity in staying up-to-date
+in our knowledge-intensive industry.
+I read most books on my tablet,
+using InformIT’s <a class="reference external" href="http://www.safaribooksonline.com/">Safari Books Online</a> -
+a service I highly recommend to any professional in IT.</p>
+<p>I’ve added a page with my <a class="reference internal" href="http://serra.github.com/books/index.html#book-shelves"><span class="std std-ref">Book Shelves</span></a>;
+you might find a good read there.</p>
+<p>Feel free to recommend me a book or two!</p>
+]]></description>
+            <category><![CDATA[ books ]]></category>
+             <pubDate>Mon, 10 Dec 2012 00:00:00 +0000</pubDate>
+        </item>
+    
+        <item>
+            <link>http://serra.github.com/2012/11/02/continuous_integration_with_jenkis__git_and_psake.html</link>
+            <guid>http://serra.github.com/2012/11/02/continuous_integration_with_jenkis__git_and_psake.html</guid>
+            <title><![CDATA[Continuous Integration with Jenkins, git and psake]]></title>
+            <description><![CDATA[<h1>Continuous Integration with Jenkins, git and psake</h1>
+<p>Right now, I’m using a Continuous Integration (CI) setup consisting of:</p>
+<blockquote>
+<div><ul class="simple">
+<li>A Jenkins CI server, running on a Rackspace Ubuntu 12.04 server</li>
+<li>git source control, backed by a github project</li>
+<li>.net projects, with psake build scripts</li>
+<li>Windows 7 build machine</li>
+</ul>
+</div></blockquote>
+<p>Here are a few take-aways:</p>
+<p class="readmorewrapper"><a class="readmore" href="http://serra.github.com/2012/11/02/continuous_integration_with_jenkis__git_and_psake.html#more">Read more...</a></p> 
+ 
+ 
+]]></description>
+             <pubDate>Fri, 02 Nov 2012 00:00:00 +0000</pubDate>
+        </item>
+    
+        <item>
+            <link>http://serra.github.com/2012/08/01/adding_mongodb_event_store.html</link>
+            <guid>http://serra.github.com/2012/08/01/adding_mongodb_event_store.html</guid>
+            <title><![CDATA[Adding a persistent event store]]></title>
+            <description><![CDATA[<span id="adding-mongodb-event-store"/><h1>Adding a persistent event store</h1>
+<p>Right now, the Simple.CQRS application use an in-memory event store,
+which means all events are lost when the asp.net MVC application unloads.
+The read model is also only kept in memory.</p>
+<p>Instead of building my own even store, I choose to use Jonathan Oliver’s <a class="footnote-reference" href="#oliver" id="id1">[1]</a>
+event store <a class="footnote-reference" href="#eventstore" id="id2">[2]</a>, which supports a wide variety of persistence engines.
+I picked MongoDB <a class="footnote-reference" href="#eventstoremongodb" id="id3">[3]</a>,
+basically just because I never had used MongoDB before.</p>
+<p class="readmorewrapper"><a class="readmore" href="http://serra.github.com/2012/08/01/adding_mongodb_event_store.html#more">Read more...</a></p> 
+ 
+ 
+ 
+]]></description>
+             <pubDate>Wed, 01 Aug 2012 00:00:00 +0000</pubDate>
+        </item>
+    
+        <item>
+            <link>http://serra.github.com/2012/07/30/protecting_entity_invariants.html</link>
+            <guid>http://serra.github.com/2012/07/30/protecting_entity_invariants.html</guid>
+            <title><![CDATA[Protecting Entity Invariants]]></title>
+            <description><![CDATA[<span id="id1"/><h1>Protecting Entity Invariants</h1>
+<p>In the previous post <a class="reference internal" href="http://serra.github.com/2012/07/27/command_validation.html#command-validation"><span class="std std-ref">Command Validation</span></a>,
+we validated a <span class="docutils literal"><span class="pre">RemoveItemsFromInventory</span></span> command.
+All wasn’t fine yet, because we found a scenario
+where this command validation alone isn’t enough.
+If we have one item in stock,
+two users both want to remove one item
+and their <span class="docutils literal"><span class="pre">RemoveItemsFromInventory</span></span> command is validated against
+the read model with <span class="docutils literal"><span class="pre">CurrentCount</span> <span class="pre">==</span> <span class="pre">1</span></span>.
+Both commands will validate, but clearly only one should succeed.
+Validation alone is not sufficient here.</p>
+<p>The invariant “cannot have less than 0 items in stock”
+should be protected by the <span class="docutils literal"><span class="pre">InventoryItem</span></span> domain entity.
+Let’s put that in the form of a specification:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt><em>Given</em> an <span class="docutils literal"><span class="pre">InventoryItem</span></span> with events</dt>
+<dd><span class="docutils literal"><span class="pre">InventoryItemCreated</span></span> and <span class="docutils literal"><span class="pre">2</span> <span class="pre">ItemsCheckedInToInventory</span></span></dd>
+<dt><em>when</em></dt>
+<dd>we <span class="docutils literal"><span class="pre">Remove</span> <span class="pre">3</span> <span class="pre">units</span></span></dd>
+<dt><em>then</em> we expect</dt>
+<dd>an <span class="docutils literal"><span class="pre">InvalidOperationException:</span> <span class="pre">"only</span> <span class="pre">2</span> <span class="pre">items</span> <span class="pre">in</span> <span class="pre">stock,</span> <span class="pre">cannot</span> <span class="pre">remove</span> <span class="pre">3</span> <span class="pre">items"</span></span></dd>
+</dl>
+</div></blockquote>
+<p>How to put this in code?</p>
+<p class="readmorewrapper"><a class="readmore" href="http://serra.github.com/2012/07/30/protecting_entity_invariants.html#more">Read more...</a></p> 
+ 
+ 
+ 
+ 
+ 
+ 
+]]></description>
+             <pubDate>Mon, 30 Jul 2012 00:00:00 +0000</pubDate>
+        </item>
+    
+        <item>
+            <link>http://serra.github.com/2012/07/27/command_validation.html</link>
+            <guid>http://serra.github.com/2012/07/27/command_validation.html</guid>
+            <title><![CDATA[Command Validation]]></title>
+            <description><![CDATA[<span id="id1"/><h1>Command Validation</h1>
+<p>In <a class="reference internal" href="http://serra.github.com/2012/07/25/extending_greg_young_s_simplest_possible_thing.html#extending-greg-young-s-simplest-possible-thing"><span class="std std-ref">Extending Greg Young’s Simplest Possible Thing</span></a>
+I thought up a couple of functional requirements.
+The first functional requirements were:</p>
+<blockquote>
+<div><ul class="simple">
+<li>As a user, I should get a warning
+when I try to remove or add a negative number of items.
+<a class="reference external" href="https://github.com/serraict/m-r/issues/2">#2</a></li>
+<li>As a user, I should get a warning
+when I try to remove more items than are currently in stock.
+<a class="reference external" href="https://github.com/serraict/m-r/issues/2">#2</a></li>
+<li>As a user I should <em>not</em> be able
+to remove more items from inventory than are currently in stock.
+<a class="reference external" href="https://github.com/serraict/m-r/issues/1">#1</a></li>
+</ul>
+</div></blockquote>
+<p>(I’ve added Github issue numbers so you can easily check the changes on Github)</p>
+<p class="readmorewrapper"><a class="readmore" href="http://serra.github.com/2012/07/27/command_validation.html#more">Read more...</a></p> 
+ 
+]]></description>
+             <pubDate>Fri, 27 Jul 2012 00:00:00 +0000</pubDate>
+        </item>
+    
+        <item>
+            <link>http://serra.github.com/2012/07/25/extending_greg_young_s_simplest_possible_thing.html</link>
+            <guid>http://serra.github.com/2012/07/25/extending_greg_young_s_simplest_possible_thing.html</guid>
+            <title><![CDATA[Extending Greg Young’s Simplest Possible Thing]]></title>
+            <description><![CDATA[<span id="id1"/><h1>Extending Greg Young’s Simplest Possible Thing</h1>
+<p>As part of my process learning CQRS,
+I thought it would be interesting to extend
+<a class="reference internal" href="http://serra.github.com/2012/07/20/cqrs_resources.html#cqrs-examples"><span class="std std-ref">one of the existing examples</span></a>
+with some new behavior.
+I decided to start with
+<a class="reference external" href="http://github.com/gregoryyoung/m-r">The Simplest Possible Thing</a>,
+an example application by Greg Young.
+Simple it is - if you accept Lines of Code as a metric for simplicity:
+the total solutions has about 900 non-blank lines
+(includes braces and comments).
+It doesn’t do much either; it allows users to:</p>
+<blockquote>
+<div><ul class="simple">
+<li>create inventory items</li>
+<li>rename inventory items</li>
+<li>check in a number of items</li>
+<li>remove a number of items</li>
+</ul>
+</div></blockquote>
+<p>Primary goal for me was to
+“get better acquainted with the CQRS way of doing things”.
+I tried to make that goal a bit smarter,
+by making up a couple of new requirements (both functional and non-functional)
+and implementing them.</p>
+<p class="readmorewrapper"><a class="readmore" href="http://serra.github.com/2012/07/25/extending_greg_young_s_simplest_possible_thing.html#more">Read more...</a></p> 
+ 
+ 
+ 
+ 
+ 
+]]></description>
+             <pubDate>Wed, 25 Jul 2012 00:00:00 +0000</pubDate>
+        </item>
+    
+        <item>
+            <link>http://serra.github.com/2012/07/20/cqrs_resources.html</link>
+            <guid>http://serra.github.com/2012/07/20/cqrs_resources.html</guid>
+            <title><![CDATA[CQRS Resources]]></title>
+            <description><![CDATA[<h1>CQRS Resources</h1>
+<p>I’ve spent the last couple of weeks studying Command Query Responsibility Segregation (CQRS).
+I found that information is scattered all over the internet
+and that at the moment there isn’t a single authoritative resource yet,
+this slows studying CQRS down somewhat.
+In this post, I’ll summarize the resources I found useful.</p>
+<p>I’ll first introduce some people and then list some good starting points,
+depending on your needs.</p>
+<p class="readmorewrapper"><a class="readmore" href="http://serra.github.com/2012/07/20/cqrs_resources.html#more">Read more...</a></p> 
+ 
+ 
+]]></description>
+             <pubDate>Fri, 20 Jul 2012 00:00:00 +0000</pubDate>
+        </item>
+    
+        <item>
+            <link>http://serra.github.com/2012/07/16/tinkering_my_blog.html</link>
+            <guid>http://serra.github.com/2012/07/16/tinkering_my_blog.html</guid>
+            <title><![CDATA[Tinkering my Blog]]></title>
+            <description><![CDATA[<h1>Tinkering my Blog</h1>
+<p>Today, I started using <a class="reference external" href="http://tinkerer.me/">http://tinkerer.me/</a> for my blog.</p>
+<p>Thusfar, I like it; nice and simple.</p>
+<p>Next I’ll check out how I can customize the style to use my company’s color
+scheme :).</p>
+]]></description>
+             <pubDate>Mon, 16 Jul 2012 00:00:00 +0000</pubDate>
+        </item>
+    
+        <item>
+            <link>http://serra.github.com/2011/07/16/unit-test-vs2010.html</link>
+            <guid>http://serra.github.com/2011/07/16/unit-test-vs2010.html</guid>
+            <title><![CDATA[Unit testing in VS 2010]]></title>
+            <description><![CDATA[<h1>Unit testing in VS 2010</h1>
+<p>After installing VS 2010, I figured I’d create a simple MVC project
+to get acquainted with the new interface.
+In the project creation wizard I was presented with the option
+to create an MS test project.
+Nice, unit testing natively integrated to Visual Studio!</p>
+<p>How does it compare to my current unit-testing setup of
+NUnit 2.5 and ReSharper as test runner?</p>
+<p>A clean comparison is made
+<a class="reference external" href="http://www.barebonescoder.com/2010/06/mstest-vs-nunit-with-visual-studio-2010-tdd/">by Jeff</a>,
+although he constraints himself by requiring to use the NUnit GUI runner.
+(He has <a class="reference external" href="http://testdriven.net/">Testdriven.NET</a> installed, though.)
+He concludes that NUnit wins, because of the clarity of the test code. I agree.
+He also likes the fluent interface of NUnit, which is a matter of taste -
+I don’t like it that much.
+Luckily using the fluent api is optional when using NUnit.</p>
+<p>Another point I like about NUnit is its track record of integration
+with CI tools and msbuild scripts.
+For MSTest, this level of automation
+<a class="reference external" href="http://stackoverflow.com/questions/2367734/nunit-vs-visual-studio-2010s-mstest">appears to be harder to achieve</a>.
+Although this might change in the futurre, I’m not going to invest in it now.</p>
+<p>For now I’m sticking with ReSharper and NUnit.</p>
+]]></description>
+             <pubDate>Sat, 16 Jul 2011 00:00:00 +0000</pubDate>
+        </item>
+    
+        <item>
+            <link>http://serra.github.com/2011/07/16/unit-testing-smtpclient.html</link>
+            <guid>http://serra.github.com/2011/07/16/unit-testing-smtpclient.html</guid>
+            <title><![CDATA[Unit-testing System.Net.Mail.SmtpClient]]></title>
+            <description><![CDATA[<h1>Unit-testing System.Net.Mail.SmtpClient</h1>
+<p>On a recent project I wanted to write unit-tests for a class using a
+<span class="docutils literal"><span class="pre">System.Net.Mail.SmtpClient</span></span> instance.
+In certain situations, the class should send an email with an attachment.
+Before I started, I thought I’d simply mock the <span class="docutils literal"><span class="pre">ISmtpClient</span></span> interface
+for this purpose … however, such an interface does not exist.</p>
+<p>After doing some research on the web, I came up with the
+following possible solutions:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Dumping the mails on disk, by configuring System.Net.Mail.SmtpClient to
+use a <span class="docutils literal"><span class="pre">deliveryMethod</span></span> of type <span class="docutils literal"><span class="pre">SpecifiedPickupDirectory</span></span> (<a class="reference external" href="http://stackoverflow.com/questions/567765/how-can-i-save-an-email-instead-of-sending-when-using-smtpclient">example</a>)</li>
+<li>Running a local smtp server to catch my test mails (and then somehow
+inspect those emails to see if they meet my requirements)</li>
+<li>Writing a mockable wrapper (e.g. implementing “<span class="docutils literal"><span class="pre">ISmtpClientWrapper</span></span>”)
+and pass this wrapper to my consuming class</li>
+<li>Run a simple SMTP server within my unit tests</li>
+</ol>
+</div></blockquote>
+<p>Of these options, the last one appeared the least intrusive to me.
+I first used
+<a class="reference external" href="http://ndumbster.sourceforge.net/default.html">nDumpster</a>
+(a .NET port of the Java project
+<a class="reference external" href="http://quintanasoft.com/dumbster/">Dumpster</a>),
+however it would cause my unit tests to hang.
+Before figuring out why, I switched to
+<a class="reference external" href="http://netdumbster.codeplex.com/">netDumpster</a>,
+which has (about) the same API. <span class="docutils literal"><span class="pre">netDumpster</span></span> ran just fine
+and enabled me to run my unit tests fast enough.</p>
+]]></description>
+             <pubDate>Sat, 16 Jul 2011 00:00:00 +0000</pubDate>
+        </item>
+    
+        <item>
+            <link>http://serra.github.com/2011/07/16/easy_install-on-windosws-7-64bit.html</link>
+            <guid>http://serra.github.com/2011/07/16/easy_install-on-windosws-7-64bit.html</guid>
+            <title><![CDATA[Installing setuptools on 64-bit Windows 7]]></title>
+            <description><![CDATA[<h1>Installing setuptools on 64-bit Windows 7</h1>
+<p>I ran into some problems installing setuptools 0.6c11 for Python 2.7
+on my Windows 7 (64 bit) machine.
+When I ran the Windows installer downloaded from the python
+<a class="reference external" href="http://pypi.python.org/pypi/setuptools">package index</a>,
+it gave me the error message
+“Python version 2.7 required, which was not found in the registry.”.
+And I’m quite sure Python 2.7 is installed.</p>
+<p>Only then I noticed I downloaded a win32 installer -
+at least it says so in the filename: setuptools-0.6c11.win32-py2.7.exe.
+I could find no 64-bits installer on pypi.</p>
+<p>There appears to be
+<a class="reference external" href="http://bugs.python.org/setuptools/issue2">a bug</a>
+involving setuptools on 64 bits Windows.
+It is solved according to the tracker,
+but apparently, nobody has created a 64 bit installer yet.</p>
+<p>A quick Google search brought me to a
+<a class="reference external" href="http://hwiechers.blogspot.com/2009/09/installing-easyinstall-and-setuptools.html">post on hwiecher’s blog</a>
+where he (?) describes a very simple solution:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Download ez_setup.py from the PEAK site.
+(I found it here: <a class="reference external" href="http://peak.telecommunity.com/dist/ez_setup.py">http://peak.telecommunity.com/dist/ez_setup.py</a>.)</li>
+<li>Run it! (python [path-to]ez_setup.py</li>
+</ol>
+</div></blockquote>
+<p>Yep, it’s that simple.</p>
+]]></description>
+             <pubDate>Sat, 16 Jul 2011 00:00:00 +0000</pubDate>
+        </item>
+    
+        <item>
+            <link>http://serra.github.com/2011/07/16/blogging-in-rst-on-github.html</link>
+            <guid>http://serra.github.com/2011/07/16/blogging-in-rst-on-github.html</guid>
+            <title><![CDATA[Blogging in reSt on GitHub]]></title>
+            <description><![CDATA[<h1>Blogging in reSt on GitHub</h1>
+<p>I started hosting my blog on GitHub. Why?</p>
+<p>There are some requirements that I found hard to meet
+using a standard blogging engine:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">I want to locally edit my blog, using a text editor.
+(And, by the way, all online blog-editors stink.)</p>
+</li>
+<li><p class="first">I want to store my blog “source files” in plain(ish) text,
+with only little markup:</p>
+<blockquote>
+<div><ul class="simple">
+<li>I can put plain text under source control.
+(This also gives me an easy backup facility.)</li>
+<li>I like writing in plain text - very little distractions.</li>
+<li>I can easily transform it to multiple output formats.</li>
+</ul>
+</div></blockquote>
+<p>I’d prefer restructured text (reSt), because I’m familiar with it.</p>
+</li>
+<li><p class="first">I would like to keep record of my published posts.
+Which posts were online at what moment in time?</p>
+</li>
+<li><p class="first">I would like to have some freedom in styling the site.
+(Even though I’m not very good at it.)</p>
+</li>
+</ul>
+</div></blockquote>
+<p>Since I’m already familiar with <a class="reference external" href="http://sphinx.pocoo.org">Sphinx</a>,
+I decided to write my blog in reSt,
+run it through Sphinx to produce a static html site
+and then push the output to my
+<a class="reference external" href="http://pages.github.com/">user page</a>
+on GitHub.</p>
+<p>You are looking at the result.</p>
+<p>Because the personal page is backed by a git repo,
+I have full history of my published posts.
+The source files are stored in reSt and are put under source control <a class="footnote-reference" href="#hg" id="id1">[1]</a>.
+This is a private repository - I have to put my drafts somewhere, right.</p>
+<p>There are some thing I’d like to add to this blog:</p>
+<blockquote>
+<div><ul class="simple">
+<li>An automatically created atom feed.</li>
+<li>Apply categories or labels to blog posts.</li>
+<li>Enable readers to leave comments.</li>
+</ul>
+</div></blockquote>
+<p>Only the atom feed is a priority to me.
+I’ll investigate if there’s a Sphinx extension for that.</p>
+<p class="rubric">Footnotes</p>
+<table class="docutils footnote" frame="void" id="hg" rules="none">
+<colgroup><col class="label"/><col/></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>In fact I use use a Mercurial repo for the source files,
+in combination with a private online repository at Bibucket. Mercurial is a nice DVCS too! And I like Bitbucket almost as much as I do GitHub.</td></tr>
+</tbody>
+</table>
+]]></description>
+             <pubDate>Sat, 16 Jul 2011 00:00:00 +0000</pubDate>
+        </item>
+    
+        <item>
+            <link>http://serra.github.com/2010/07/26/b2mml-2.html</link>
+            <guid>http://serra.github.com/2010/07/26/b2mml-2.html</guid>
+            <title><![CDATA[Generating C# code files for B2MML schema’s (2)]]></title>
+            <description><![CDATA[<h1>Generating C# code files for B2MML schema’s (2)</h1>
+<p>I tried generating C# code files from the B2MML-V0401 xsd schema’s
+using <span class="docutils literal"><span class="pre">xsd.exe</span></span>.
+It required utilizing a bug in <span class="docutils literal"><span class="pre">xsd.exe</span></span>,
+typing in a command with as many parameters as xsd schema’s
+and resulted in a single, huge code file with code that I didn’t really like.
+It worked, but I wasn’t completely satisfied
+(see my previous post on this subject).
+After posting my findings to the
+<a class="reference external" href="http://tech.groups.yahoo.com/group/wbf-xml-wg/">WBF XML newsgroup</a>,
+I got a useful reply from Nick.</p>
+<p>Nick advised me to create a single schema file that includes the
+B2MML-V0401 xsd schema’s for which code should be generated and name it
+(for instance) <span class="docutils literal"><span class="pre">B2MML-V0401.xsd</span></span>.
+Then run <span class="docutils literal"><span class="pre">xsd</span> <span class="pre">B2MML-V0401-AllExtensions.xsd</span> <span class="pre">.\B2MML-V0401.xsd</span> <span class="pre">/c</span></span>
+on this file and voil?, you’ll get the code generated into <span class="docutils literal"><span class="pre">B2MML-V0401.cs</span></span>.</p>
+<p>I like this method, because the command is readable
+and I can cleanly specify the schema’s to use for input.</p>
+<p>However, it still left me with the code I didn’t really like. I’d like:</p>
+<blockquote>
+<div><ul class="simple">
+<li>generic lists instead of arrays</li>
+<li>the ability to generate data contract attributes</li>
+<li>to be able to automatically put the code in separate code files</li>
+</ul>
+</div></blockquote>
+<p>Nick pointed out that his company provides proprietary libraries
+that are compatible with B2MML messages and that provides the API’s I prefer.
+At this time however, I don’t want to go the proprietary road.
+However, if I can get my hands on an evaluation version,
+I’ll experiment a bit with it.</p>
+<p>I spend some, or rather too much, time searching for a freely available tool
+to do this code generation for me. I came across <span class="docutils literal"><span class="pre">CodeXS</span></span> en <span class="docutils literal"><span class="pre">XsdObjectGen</span></span>,
+but I found it cumbersome to start using them,
+and their current status was unclear to me.
+I ended up using <a class="reference external" href="http://xsd2code.codeplex.com/">Xsd2Code</a>,
+which enables me to generate the code I like from within Visual Studio (2008).
+It also has a command line tool, but I haven’t checked it out yet.</p>
+<p>Any suggestions on code generation tools (preferably open source) are welcome.</p>
+]]></description>
+             <pubDate>Mon, 26 Jul 2010 00:00:00 +0000</pubDate>
+        </item>
+    
+        <item>
+            <link>http://serra.github.com/2010/07/16/b2mml-1.html</link>
+            <guid>http://serra.github.com/2010/07/16/b2mml-1.html</guid>
+            <title><![CDATA[Generating C# code files for B2MML schemas]]></title>
+            <description><![CDATA[<h1>Generating C# code files for B2MML schemas</h1>
+<p>Recently I was doing some proof-of-concepts for using B2MML messages in my
+.NET/C# application.
+I wanted to be able to generate xml-serializable C# classes,
+compliant to the B2MML xsd schema’s. Since the xsd schema’s are
+<a class="reference external" href="http://www.wbf.org/catalog/b2mml.php">available on the WBF website</a>,
+I figured I’d simply run those through <span class="docutils literal"><span class="pre">xsd.exe</span></span> and start coding away.</p>
+<p>However, for some mysterious reason, you are not able to specify the filename
+of the .cs output file <span class="docutils literal"><span class="pre">xsd.exe</span></span> generates.
+By default it concatenates the names of all the schema’s you pass into it.
+If you generate a code file for the  twenty-or-so schema’s in the B2MML
+implementation, <span class="docutils literal"><span class="pre">xsd.exe</span></span> chooses a filename that is awkward to read and, worse,
+too large to be handled by my Windows installation.</p>
+<p>I found a <a class="reference external" href="http://stackoverflow.com/questions/906093/xsd-exe-output-filename">work-around for this issue on stackoverflow</a>.
+It appears that there is a <a class="reference external" href="http://social.msdn.microsoft.com/Forums/en-US/xmlandnetfx/thread/8ab41df8-69d4-44e4-8795-436088f230e2">known bug</a>
+in <span class="docutils literal"><span class="pre">xsd.exe</span></span> that you can exploit to get a short, readable filename:
+pass the last schema using the “.” path characters.
+Now <span class="docutils literal"><span class="pre">xsd.exe</span></span> only  uses the last schema in the output filename.
+So I created an empty xsd schema named <span class="docutils literal"><span class="pre">B2MML-V0401.xsd</span></span> and ran</p>
+<p><span class="docutils literal"><span class="pre">xsd</span> <span class="pre">B2MML-V0401-AllExtensions.xsd</span> <span class="pre">B2MML-V0401-Common.xsd</span>
+<span class="pre">[other</span> <span class="pre">schemas</span> <span class="pre">go</span> <span class="pre">here]</span> <span class="pre">.\B2MML-V0401.xsd</span> <span class="pre">/c</span></span></p>
+<p>Which resulted in the file <span class="docutils literal"><span class="pre">B2MML-V0401.cs</span></span>.</p>
+<p>The resulting C# code is usable in my application,
+however there are some things that still bother me:</p>
+<blockquote>
+<div><ul class="simple">
+<li>I don’t really like the code that is generated
+(amongst other things I’d prefer generic lists over arrays and
+all code ends up in one huge 30k+ LOC codefile)</li>
+<li>I don’t like the fact that I utilize a known bug in <span class="docutils literal"><span class="pre">xsd.exe</span></span></li>
+<li>The command needs many parameters, which makes it unreadable.</li>
+</ul>
+</div></blockquote>
+<p>I posted my work-around to the
+<a class="reference external" href="http://tech.groups.yahoo.com/group/wbf-xml-wg/">WBF XML newsgroup</a>
+and got some useful replies to overcome these issues.
+I’ll investigate those and post my findings here.</p>
+]]></description>
+             <pubDate>Fri, 16 Jul 2010 00:00:00 +0000</pubDate>
+        </item>
+    
+    </channel>
+</rss>

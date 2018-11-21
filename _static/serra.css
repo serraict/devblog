@@ -1,0 +1,24 @@
+    header { background-image: url('header-serra.png'); background-repeat: repeat; }
+
+/* =============================================================================
+   Links
+   ========================================================================== */
+
+a { color: #b5d334; }
+a:visited { color: #009279; }
+a:focus { outline: thin dotted; }
+
+/* Improve readability when focused and hovered in all browsers: h5bp.com/h */
+a:hover, a:active { outline: 0; }
+
+/* =============================================================================
+   Typography
+   ========================================================================== */
+
+dfn { font-style: italic; }
+
+hr { display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0; }
+
+ins { background: #ff9; color: #000; text-decoration: none; }
+
+mark { background: #ff0; color: #000; font-style: italic; font-weight: bold; }

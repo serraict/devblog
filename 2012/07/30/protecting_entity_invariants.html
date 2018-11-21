@@ -1,0 +1,289 @@
+<!DOCTYPE html><!--[if lt IE 7]>      <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:og="http://ogp.me/ns#"
+    xmlns:fb="https://www.facebook.com/2008/fbml" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:og="http://ogp.me/ns#"
+    xmlns:fb="https://www.facebook.com/2008/fbml" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:og="http://ogp.me/ns#"
+    xmlns:fb="https://www.facebook.com/2008/fbml" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:og="http://ogp.me/ns#"
+    xmlns:fb="https://www.facebook.com/2008/fbml" class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="description" content="My blog">
+        <meta name="viewport" content="width=device-width">
+        <title>Protecting Entity Invariants &mdash; Serra&#39;s Blog ^^</title>
+            <link rel="stylesheet" href="../../../_static/normalize.css" type="text/css">
+            <link rel="stylesheet" href="../../../_static/sphinx.css" type="text/css">
+            <link rel="stylesheet" href="../../../_static/main.css" type="text/css">
+            <link rel="stylesheet" href="../../../_static/modern5.css" type="text/css">
+            <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+            <link rel="stylesheet" href="../../../_static/font-awesome.min.css" type="text/css">
+        <link rel="stylesheet" href="../../../_static/serra.css" type="text/css" /><link rel="shortcut icon" href="../../../_static/tinkerer.ico" /><!-- Load modernizr and JQuery -->
+        <script src="../../../_static/vendor/modernizr-2.6.2.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="../../../_static/vendor/jquery-1.8.2.min.js"><\/script>')</script>
+        <script src="../../../_static/plugins.js"></script>
+        <script src="../../../_static/main.js"></script>
+        <link rel="search" title="Search" href="../../../search.html" /><link rel="next" title="Command Validation" href="../27/command_validation.html" /><link rel="prev" title="Adding a persistent event store" href="../../08/01/adding_mongodb_event_store.html" /><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.html" /><script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.7.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        SOURCELINK_SUFFIX: '.txt',
+        HAS_SOURCE:  true
+      };
+    </script><script type="text/javascript" src="../../../_static/underscore.js"></script><script type="text/javascript" src="../../../_static/doctools.js"></script><script type="text/javascript" src="../../../_static/disqus.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Adjusts document height if sidebar is taller
+            var documentwrapper = document.getElementsByTagName("article")[0];
+            var sidebar = document.getElementsByClassName("sidebar")[0];
+
+            if (sidebar.offsetHeight > documentwrapper.offsetHeight)
+            {
+                var mainwrapper = document.getElementsByClassName("main")[0];
+                documentwrapper.style.minHeight = mainwrapper.offsetHeight + "px";
+            }
+
+            // Scroll to content if on small screen
+            if (screen.width < 480)
+            {
+                $(document).scrollTop(document.getElementsByTagName("article")[0].offsetTop - 44);
+            }
+        });
+    </script></head>
+    <body role="document">
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+      <div id="container"><header role="banner">
+            <hgroup>
+              <h1><a href="../../../index.html">Serra&#39;s Blog ^^</a></h1><h2>Learning while developing software</h2></hgroup>
+          </header>
+      <nav role="navigation">
+            <ul><li class="quicklink"><div class="rss">
+        <a href="../../../rss.html" title="Subscribe via RSS"><span class="fa fa-lg fa-rss"></span></a>
+    </div></li><li class="main-nav">
+                  <a href="../../../index.html">Home</a>
+                </li>
+              <li class="main-nav">
+                  <a href="../../../pages/bio.html">Bio</a>
+                </li>
+              <li class="main-nav">
+                  <a href="../../../pages/contact.html">Contact</a>
+                </li>
+              </ul>
+          </nav><div class="main-container" role="main"><div class="main wrapper body clearfix"><article role="article"><ul class="related clearfix">
+            <li class="left"> &laquo; <a href="../../08/01/adding_mongodb_event_store.html">Adding a persistent event store</a></li>
+            <li class="right"><a href="../27/command_validation.html">Command Validation</a> &raquo; </li>
+        </ul><div class="timestamp postmeta">
+            <span>July 30, 2012</span>
+        </div>
+    <div class="section" id="protecting-entity-invariants">
+<span id="id1"></span><h1>Protecting Entity Invariants</h1>
+<p>In the previous post <a class="reference internal" href="../27/command_validation.html#command-validation"><span class="std std-ref">Command Validation</span></a>,
+we validated a <span class="docutils literal"><span class="pre">RemoveItemsFromInventory</span></span> command.
+All wasn’t fine yet, because we found a scenario
+where this command validation alone isn’t enough.
+If we have one item in stock,
+two users both want to remove one item
+and their <span class="docutils literal"><span class="pre">RemoveItemsFromInventory</span></span> command is validated against
+the read model with <span class="docutils literal"><span class="pre">CurrentCount</span> <span class="pre">==</span> <span class="pre">1</span></span>.
+Both commands will validate, but clearly only one should succeed.
+Validation alone is not sufficient here.</p>
+<p>The invariant “cannot have less than 0 items in stock”
+should be protected by the <span class="docutils literal"><span class="pre">InventoryItem</span></span> domain entity.
+Let’s put that in the form of a specification:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt><em>Given</em> an <span class="docutils literal"><span class="pre">InventoryItem</span></span> with events</dt>
+<dd><span class="docutils literal"><span class="pre">InventoryItemCreated</span></span> and <span class="docutils literal"><span class="pre">2</span> <span class="pre">ItemsCheckedInToInventory</span></span></dd>
+<dt><em>when</em></dt>
+<dd>we <span class="docutils literal"><span class="pre">Remove</span> <span class="pre">3</span> <span class="pre">units</span></span></dd>
+<dt><em>then</em> we expect</dt>
+<dd>an <span class="docutils literal"><span class="pre">InvalidOperationException:</span> <span class="pre">&quot;only</span> <span class="pre">2</span> <span class="pre">items</span> <span class="pre">in</span> <span class="pre">stock,</span> <span class="pre">cannot</span> <span class="pre">remove</span> <span class="pre">3</span> <span class="pre">items&quot;</span></span></dd>
+</dl>
+</div></blockquote>
+<p>How to put this in code?</p>
+<div id="more"> </div><p>We could code the specification as follows using <span class="docutils literal"><span class="pre">Simple.Testing</span></span> <a class="footnote-reference" href="#simpletesting" id="id2">[3]</a>:</p>
+<div class="highlight-c# notranslate"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">spec</span> <span class="p">=</span> <span class="k">new</span> <span class="n">FailingSpecification</span><span class="p">&lt;</span><span class="n">Given</span><span class="p">&lt;</span><span class="n">InventoryItem</span><span class="p">&gt;,</span> <span class="n">InvalidOperationException</span><span class="p">&gt;</span>
+<span class="p">{</span>
+    <span class="n">Guid</span> <span class="n">id</span> <span class="p">=</span> <span class="n">Guid</span><span class="p">.</span><span class="n">NewGuid</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="k">new</span> <span class="n">FailingSpecification</span><span class="p">&lt;</span><span class="n">Given</span><span class="p">&lt;</span><span class="n">InventoryItem</span><span class="p">&gt;,</span> <span class="n">InvalidOperationException</span><span class="p">&gt;</span>
+    <span class="p">{</span>
+        <span class="n">On</span> <span class="p">=</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="k">new</span> <span class="n">Given</span><span class="p">&lt;</span><span class="n">InventoryItem</span><span class="p">&gt;(</span><span class="k">new</span> <span class="n">Event</span><span class="p">[]</span>
+                <span class="p">{</span>
+                    <span class="k">new</span> <span class="nf">InventoryItemCreated</span><span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="s">&quot;the name&quot;</span><span class="p">),</span>
+                    <span class="k">new</span> <span class="nf">ItemsCheckedInToInventory</span><span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="m">2</span><span class="p">)</span>
+                <span class="p">}),</span>
+        <span class="n">When</span> <span class="p">=</span> <span class="n">given</span> <span class="p">=&gt;</span> <span class="n">given</span><span class="p">.</span><span class="n">Sut</span><span class="p">.</span><span class="n">Remove</span><span class="p">(</span><span class="m">3</span><span class="p">),</span>
+        <span class="n">Expect</span> <span class="p">=</span>
+                <span class="p">{</span>
+                    <span class="n">ex</span> <span class="p">=&gt;</span> <span class="n">ex</span><span class="p">.</span><span class="n">Message</span> <span class="p">==</span> <span class="s">&quot;only 2 items in stock, cannot remove 3 items&quot;</span>
+                <span class="p">},</span>
+    <span class="p">};</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>Our domain model does not have any getters or setters:
+we can only manipulate it by calling methods on it.
+Each method protects it’s object’s invariants -
+if a variant cannot be upheld, the method throws an exception:</p>
+<div class="highlight-c# notranslate"><div class="highlight"><pre><span></span><span class="n">InventoryItem</span> <span class="p">:</span> <span class="n">AggregateRoot</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">void</span> <span class="nf">Remove</span><span class="p">(</span><span class="kt">int</span> <span class="n">count</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// other guard methods</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">count</span> <span class="p">&gt;</span> <span class="n">_count</span><span class="p">)</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">InvalidOperationException</span><span class="p">(</span><span class="kt">string</span><span class="p">.</span><span class="n">Format</span><span class="p">(</span><span class="s">&quot;only {0} items in stock, cannot remove {1} items&quot;</span><span class="p">,</span> <span class="n">_count</span><span class="p">,</span> <span class="n">count</span><span class="p">));</span>
+
+        <span class="c1">// apply the event</span>
+        <span class="n">ApplyChange</span><span class="p">(</span><span class="k">new</span> <span class="n">ItemsRemovedFromInventory</span><span class="p">(</span><span class="n">_id</span><span class="p">,</span> <span class="n">count</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="c1">// snip</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The current number of inventory items is kept in the <span class="docutils literal"><span class="pre">_count</span></span> field
+and we use that field to validate the requested number of items to remove.
+If this does not throw, we apply <span class="docutils literal"><span class="pre">ItemsRemovedFromInventory</span></span> event.</p>
+<div class="section" id="intermezzo-event-sourcing">
+<h2>Intermezzo: Event Sourcing</h2>
+<p>Note that we don’t simply set the <span class="docutils literal"><span class="pre">_count</span></span> field here.
+We use event sourcing <a class="footnote-reference" href="#fowlereventsourcing" id="id3">[1]</a> <a class="footnote-reference" href="#youngevensourcing" id="id4">[2]</a>
+to keep track of all changes to our entity
+and reconstruct our current state by replaying all our events.
+The <span class="docutils literal"><span class="pre">ApplyChanges</span></span> method (from the <span class="docutils literal"><span class="pre">AggregateRoot</span></span> base class)
+looks for a method with signature <span class="docutils literal"><span class="pre">Apply(ItemsRemovedFromInventory</span> <span class="pre">e)</span></span>
+and invokes it with our <span class="docutils literal"><span class="pre">ItemsRemovedFromInventory</span></span>:</p>
+<div class="highlight-c# notranslate"><div class="highlight"><pre><span></span><span class="k">private</span> <span class="k">void</span> <span class="nf">Apply</span><span class="p">(</span><span class="n">ItemsRemovedFromInventory</span> <span class="n">e</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="n">_count</span> <span class="p">-=</span> <span class="n">e</span><span class="p">.</span><span class="n">Count</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>It’s in this <span class="docutils literal"><span class="pre">Apply</span></span> method that <span class="docutils literal"><span class="pre">_count</span></span> is changed.
+Later, we can call this method with our persisted domain events
+to reconstruct the object state at any given time.</p>
+</div>
+<div class="section" id="back-to-the-test">
+<h2>Back to the test …</h2>
+<p>The output of our tests is (almost) human-readable:</p>
+<div class="highlight-c# notranslate"><div class="highlight"><pre><span></span>*** SPECIFICATION: when_removing_more_items_then_are_available PASSED
+
+ON:
+--
+Given: SimpleCQRS.InventoryItem
+ Initially:
+    SimpleCQRS.InventoryItemCreated
+    SimpleCQRS.ItemsCheckedInToInventory
+    -
+ Uncommitted events:
+    -
+
+Results with:
+System.InvalidOperationException
+only 2 items in stock, cannot remove 3 items
+
+EXPECTATIONS:
+-------------
+The Invalid Operation Exception&#39;s Message must be equal to &quot;only 2 items
+in stock, cannot remove 3 items&quot; PASSED
+</pre></div>
+</div>
+<p>Although readability can be improved, it already
+makes a nice piece of documentation of our domain entities.</p>
+<p>Take aways:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Domain rules should be implemented in your entities as well as
+your validation code</li>
+<li>Guarantee invariants of your entities by throwing exceptions
+from guard functions of your domain entities</li>
+<li>Write specification-like tests</li>
+</ul>
+</div></blockquote>
+<p class="rubric">Footnotes</p>
+<table class="docutils footnote" frame="void" id="fowlereventsourcing" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[1]</a></td><td><a class="reference external" href="http://martinfowler.com/eaaDev/EventSourcing.html">Fowler on event souring</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="youngevensourcing" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4">[2]</a></td><td><a class="reference external" href="http://codebetter.com/gregyoung/2010/02/20/why-use-event-sourcing/">Greg Young on event sourcing</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="simpletesting" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[3]</a></td><td><a class="reference external" href="http://nuget.org/packages/Simple.Testing">Simple.Testing NuGet package</a></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+    <div class="postmeta">
+        <div class="author">
+            <span>Posted by Marijn van der Zee</span>
+        </div>
+        
+        <div class="tags">
+            <span>
+                Tags:
+                <a href="../../../tags/cqrs.html">CQRS</a></span>
+        </div>
+        </div>
+    <div id="disqus_thread"></div><script type="text/javascript">    var disqus_shortname = "serraongithub";    var disqus_identifier = "2012/07/30/protecting_entity_invariants";    disqus_thread();</script><noscript>Please enable JavaScript to view the    <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><ul class="related clearfix">
+            <li class="left"> &laquo; <a href="../../08/01/adding_mongodb_event_store.html">Adding a persistent event store</a></li>
+            <li class="right"><a href="../27/command_validation.html">Command Validation</a> &raquo; </li>
+        </ul></article><aside class="sidebar"><section><div class="widget">
+    <h1>Recent Posts</h1>
+    <ul><li>
+            <a href="../../../2013/08/28/setting-up-rhino-servicebus-with-rhinoqueues.html">Setting up Rhino Servicebus with Rhinoqueues</a>
+        </li><li>
+            <a href="../../../2013/03/27/passing_build_properties_to_psake_cmd.html">Passing build properties to psake.cmd</a>
+        </li><li>
+            <a href="../../../2013/03/04/custom_editor_using_twitter_bootstrap_mvc4.html">Custom editor using Twitter.Bootstrap.Mvc4</a>
+        </li><li>
+            <a href="../../12/10/my_books.html">My Readings …</a>
+        </li><li>
+            <a href="../../11/02/continuous_integration_with_jenkis__git_and_psake.html">Continuous Integration with Jenkins, git and psake</a>
+        </li><li>
+            <a href="../../08/01/adding_mongodb_event_store.html">Adding a persistent event store</a>
+        </li><li>
+            <a href="#">Protecting Entity Invariants</a>
+        </li><li>
+            <a href="../27/command_validation.html">Command Validation</a>
+        </li><li>
+            <a href="../25/extending_greg_young_s_simplest_possible_thing.html">Extending Greg Young’s Simplest Possible Thing</a>
+        </li><li>
+            <a href="../20/cqrs_resources.html">CQRS Resources</a>
+        </li></ul>
+</div>
+</section><section><div class="widget" id="searchbox" role="search">
+    <h1><a href="#searchbox">Search</a></h1>
+    <form action="../../../search.html" method="get">
+        <input type="text" name="q" />
+        <button type="submit"><span class="fa fa-search"></span></button>
+    </form>
+</div></section></aside></div> <!-- #main --></div> <!-- #main-container -->
+
+        <div class="footer-container" role="contentinfo"><footer class="wrapper">&copy; Copyright 2010, 2011, 2012 Marijn van der Zee. Powered by <a href="http://www.tinkerer.me/">Tinkerer</a> and <a href="http://sphinx.pocoo.org/">Sphinx</a>.</footer></div> <!-- footer-container -->
+
+      </div> <!--! end of #container --><!--[if lt IE 7 ]>
+          <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+          <script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
+        <![endif]-->
+    </body>
+</html>

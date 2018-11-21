@@ -1,0 +1,199 @@
+<!DOCTYPE html><!--[if lt IE 7]>      <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:og="http://ogp.me/ns#"
+    xmlns:fb="https://www.facebook.com/2008/fbml" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:og="http://ogp.me/ns#"
+    xmlns:fb="https://www.facebook.com/2008/fbml" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:og="http://ogp.me/ns#"
+    xmlns:fb="https://www.facebook.com/2008/fbml" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:og="http://ogp.me/ns#"
+    xmlns:fb="https://www.facebook.com/2008/fbml" class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="description" content="My blog">
+        <meta name="viewport" content="width=device-width">
+        <title>Custom editor using Twitter.Bootstrap.Mvc4 &mdash; Serra&#39;s Blog ^^</title>
+            <link rel="stylesheet" href="../../../_static/normalize.css" type="text/css">
+            <link rel="stylesheet" href="../../../_static/sphinx.css" type="text/css">
+            <link rel="stylesheet" href="../../../_static/main.css" type="text/css">
+            <link rel="stylesheet" href="../../../_static/modern5.css" type="text/css">
+            <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+            <link rel="stylesheet" href="../../../_static/font-awesome.min.css" type="text/css">
+        <link rel="stylesheet" href="../../../_static/serra.css" type="text/css" /><link rel="shortcut icon" href="../../../_static/tinkerer.ico" /><!-- Load modernizr and JQuery -->
+        <script src="../../../_static/vendor/modernizr-2.6.2.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="../../../_static/vendor/jquery-1.8.2.min.js"><\/script>')</script>
+        <script src="../../../_static/plugins.js"></script>
+        <script src="../../../_static/main.js"></script>
+        <link rel="search" title="Search" href="../../../search.html" /><link rel="next" title="My Readings …" href="../../../2012/12/10/my_books.html" /><link rel="prev" title="Passing build properties to psake.cmd" href="../27/passing_build_properties_to_psake_cmd.html" /><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.html" /><script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.7.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        SOURCELINK_SUFFIX: '.txt',
+        HAS_SOURCE:  true
+      };
+    </script><script type="text/javascript" src="../../../_static/underscore.js"></script><script type="text/javascript" src="../../../_static/doctools.js"></script><script type="text/javascript" src="../../../_static/disqus.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Adjusts document height if sidebar is taller
+            var documentwrapper = document.getElementsByTagName("article")[0];
+            var sidebar = document.getElementsByClassName("sidebar")[0];
+
+            if (sidebar.offsetHeight > documentwrapper.offsetHeight)
+            {
+                var mainwrapper = document.getElementsByClassName("main")[0];
+                documentwrapper.style.minHeight = mainwrapper.offsetHeight + "px";
+            }
+
+            // Scroll to content if on small screen
+            if (screen.width < 480)
+            {
+                $(document).scrollTop(document.getElementsByTagName("article")[0].offsetTop - 44);
+            }
+        });
+    </script></head>
+    <body role="document">
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+      <div id="container"><header role="banner">
+            <hgroup>
+              <h1><a href="../../../index.html">Serra&#39;s Blog ^^</a></h1><h2>Learning while developing software</h2></hgroup>
+          </header>
+      <nav role="navigation">
+            <ul><li class="quicklink"><div class="rss">
+        <a href="../../../rss.html" title="Subscribe via RSS"><span class="fa fa-lg fa-rss"></span></a>
+    </div></li><li class="main-nav">
+                  <a href="../../../index.html">Home</a>
+                </li>
+              <li class="main-nav">
+                  <a href="../../../pages/bio.html">Bio</a>
+                </li>
+              <li class="main-nav">
+                  <a href="../../../pages/contact.html">Contact</a>
+                </li>
+              </ul>
+          </nav><div class="main-container" role="main"><div class="main wrapper body clearfix"><article role="article"><ul class="related clearfix">
+            <li class="left"> &laquo; <a href="../27/passing_build_properties_to_psake_cmd.html">Passing build properties to psake.cmd</a></li>
+            <li class="right"><a href="../../../2012/12/10/my_books.html">My Readings …</a> &raquo; </li>
+        </ul><div class="timestamp postmeta">
+            <span>March 04, 2013</span>
+        </div>
+    <div class="section" id="custom-editor-using-twitter-bootstrap-mvc4">
+<h1>Custom editor using Twitter.Bootstrap.Mvc4</h1>
+<p>Twitter.Bootstrap has tons of extensions that are available to anyone using  <span class="docutils literal"><span class="pre">Twitter.Bootstrap.Mvc4</span></span> <a class="footnote-reference" href="#tbm" id="id1">[1]</a>.
+As an example, here are the steps to add a date picker <a class="footnote-reference" href="#datepicker" id="id2">[2]</a> to your Asp.Net Mvc4 app
+using <span class="docutils literal"><span class="pre">Twitter.Bootstrap.Mvc4</span></span>.</p>
+<div id="more"> </div><p>Create an empty Mvc4 web project and let’s start from the sample that comes with <span class="docutils literal"><span class="pre">Twitter.Bootstrap.Mvc4</span></span>:</p>
+<div class="highlight-c# notranslate"><div class="highlight"><pre><span></span><span class="n">Install</span><span class="p">-</span><span class="n">Package</span> <span class="n">twitter</span><span class="p">.</span><span class="n">bootstrap</span><span class="p">.</span><span class="n">mvc4</span><span class="p">.</span><span class="n">sample</span>
+</pre></div>
+</div>
+<p>Download the date picker <a class="footnote-reference" href="#datepicker-download" id="id3">[3]</a> and include .js and .css files in your project.
+Add them to the <span class="docutils literal"><span class="pre">BootstrapBundleConfig</span></span>:</p>
+<div class="highlight-c# notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">RegisterBundles</span><span class="p">(</span><span class="n">BundleCollection</span> <span class="n">bundles</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">bundles</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="k">new</span> <span class="n">ScriptBundle</span><span class="p">(</span><span class="s">&quot;~/js&quot;</span><span class="p">).</span><span class="n">Include</span><span class="p">(</span>
+        <span class="c1">// ...</span>
+        <span class="p">,</span> <span class="s">&quot;~/Scripts/bootstrap-datepicker.js&quot;</span>
+        <span class="p">));</span>
+
+    <span class="n">bundles</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="k">new</span> <span class="n">StyleBundle</span><span class="p">(</span><span class="s">&quot;~/content/css&quot;</span><span class="p">).</span><span class="n">Include</span><span class="p">(</span>
+        <span class="c1">// ...</span>
+        <span class="p">,</span> <span class="s">&quot;~/Content/datepicker.css&quot;</span>
+        <span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Create an editor template named in <span class="docutils literal"><span class="pre">~/Views/Shared/EditorTemplates</span></span> named <span class="docutils literal"><span class="pre">Date.cshtml</span></span>:</p>
+<div class="highlight-c# notranslate"><div class="highlight"><pre><span></span><span class="n">@model</span> <span class="n">DateTime</span>
+<span class="n">@Html</span><span class="p">.</span><span class="n">TextBox</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">Model</span><span class="p">,</span> <span class="k">new</span> <span class="p">{</span><span class="n">@class</span> <span class="p">=</span> <span class="s">&quot;datepicker&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>Make sure to add the <span class="docutils literal"><span class="pre">datepicker</span></span> class.
+The file should be named <span class="docutils literal"><span class="pre">Date.cshtml</span></span> and not <span class="docutils literal"><span class="pre">DateTime.cshtml</span></span>,
+because the <cite>HomeInputModel.StartDate</cite> property is decorated with the data annotation <span class="docutils literal"><span class="pre">[DataType(DataType.Date)]</span></span>.</p>
+<p>Finally add the Javascript code that hooks the datepicker text boxes:</p>
+<div class="highlight-c# notranslate"><div class="highlight"><pre><span></span>$(document).ready(function() {
+    $(&#39;.datepicker&#39;).datepicker();
+})
+</pre></div>
+</div>
+<p>Done.</p>
+<p class="rubric">Footnotes</p>
+<table class="docutils footnote" frame="void" id="tbm" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td><a class="reference external" href="http://nuget.org/packages/twitter.bootstrap.mvc4">http://nuget.org/packages/twitter.bootstrap.mvc4</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="datepicker" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td><a class="reference external" href="http://www.eyecon.ro/bootstrap-datepicker/">http://www.eyecon.ro/bootstrap-datepicker/</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="datepicker-download" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td><a class="reference external" href="http://www.eyecon.ro/bootstrap-datepicker/datepicker.zip">http://www.eyecon.ro/bootstrap-datepicker/datepicker.zip</a></td></tr>
+</tbody>
+</table>
+</div>
+
+    <div class="postmeta">
+        <div class="author">
+            <span>Posted by Marijn van der Zee</span>
+        </div>
+        
+        
+        </div>
+    <div id="disqus_thread"></div><script type="text/javascript">    var disqus_shortname = "serraongithub";    var disqus_identifier = "2013/03/04/custom_editor_using_twitter_bootstrap_mvc4";    disqus_thread();</script><noscript>Please enable JavaScript to view the    <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><ul class="related clearfix">
+            <li class="left"> &laquo; <a href="../27/passing_build_properties_to_psake_cmd.html">Passing build properties to psake.cmd</a></li>
+            <li class="right"><a href="../../../2012/12/10/my_books.html">My Readings …</a> &raquo; </li>
+        </ul></article><aside class="sidebar"><section><div class="widget">
+    <h1>Recent Posts</h1>
+    <ul><li>
+            <a href="../../08/28/setting-up-rhino-servicebus-with-rhinoqueues.html">Setting up Rhino Servicebus with Rhinoqueues</a>
+        </li><li>
+            <a href="../27/passing_build_properties_to_psake_cmd.html">Passing build properties to psake.cmd</a>
+        </li><li>
+            <a href="#">Custom editor using Twitter.Bootstrap.Mvc4</a>
+        </li><li>
+            <a href="../../../2012/12/10/my_books.html">My Readings …</a>
+        </li><li>
+            <a href="../../../2012/11/02/continuous_integration_with_jenkis__git_and_psake.html">Continuous Integration with Jenkins, git and psake</a>
+        </li><li>
+            <a href="../../../2012/08/01/adding_mongodb_event_store.html">Adding a persistent event store</a>
+        </li><li>
+            <a href="../../../2012/07/30/protecting_entity_invariants.html">Protecting Entity Invariants</a>
+        </li><li>
+            <a href="../../../2012/07/27/command_validation.html">Command Validation</a>
+        </li><li>
+            <a href="../../../2012/07/25/extending_greg_young_s_simplest_possible_thing.html">Extending Greg Young’s Simplest Possible Thing</a>
+        </li><li>
+            <a href="../../../2012/07/20/cqrs_resources.html">CQRS Resources</a>
+        </li></ul>
+</div>
+</section><section><div class="widget" id="searchbox" role="search">
+    <h1><a href="#searchbox">Search</a></h1>
+    <form action="../../../search.html" method="get">
+        <input type="text" name="q" />
+        <button type="submit"><span class="fa fa-search"></span></button>
+    </form>
+</div></section></aside></div> <!-- #main --></div> <!-- #main-container -->
+
+        <div class="footer-container" role="contentinfo"><footer class="wrapper">&copy; Copyright 2010, 2011, 2012 Marijn van der Zee. Powered by <a href="http://www.tinkerer.me/">Tinkerer</a> and <a href="http://sphinx.pocoo.org/">Sphinx</a>.</footer></div> <!-- footer-container -->
+
+      </div> <!--! end of #container --><!--[if lt IE 7 ]>
+          <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+          <script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
+        <![endif]-->
+    </body>
+</html>
